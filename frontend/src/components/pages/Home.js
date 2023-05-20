@@ -1,3 +1,5 @@
+import styles from "./User/Profile.module.css";
+
 function Home() {
 	return (
 		<section>

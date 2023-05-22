@@ -1,4 +1,4 @@
-import styles from "./User/Profile.module.css";
+// import styles from "./User/Profile.module.css";
 
 function Home() {
 	return (

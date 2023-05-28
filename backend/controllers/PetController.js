@@ -83,7 +83,9 @@ module.exports = class PetController {
 		const user = await getUserByToken(token);
 
 		// Pets from user
-		const pets = await Pet.find({ "user._id": user._id }).sort("-createdAt");
+		const pets = await Pet.find({ "user._id": user._id }).sort(
+			"-createdAt"
+		);
 
 		res.status(200).json({ pets });
 	}
@@ -94,7 +96,9 @@ module.exports = class PetController {
 		const user = await getUserByToken(token);
 
 		// Pets from user
-		const pets = await Pet.find({ "adopter._id": user._id }).sort("-createdAt");
+		const pets = await Pet.find({ "adopter._id": user._id }).sort(
+			"-createdAt"
+		);
 
 		res.status(200).json({ pets });
 	}
@@ -139,7 +143,9 @@ module.exports = class PetController {
 		const user = await getUserByToken(token);
 
 		if (pet.user._id.toString() !== user._id.toString()) {
-			res.status(422).json({ message: "Usuário logado difere do usuário do PET" });
+			res.status(422).json({
+				message: "Usuário logado difere do usuário do PET",
+			});
 			return;
 		}
 
@@ -174,7 +180,9 @@ module.exports = class PetController {
 		const user = await getUserByToken(token);
 
 		if (pet.user._id.toString() !== user._id.toString()) {
-			res.status(422).json({ message: "Usuário logado difere do usuário do PET" });
+			res.status(422).json({
+				message: "Usuário logado difere do usuário do PET",
+			});
 			return;
 		}
 
@@ -208,7 +216,9 @@ module.exports = class PetController {
 		}
 
 		if (!available) {
-			res.status(422).json({ message: "Informar se o PET está disponivel é obrigatório!" });
+			res.status(422).json({
+				message: "Informar se o PET está disponivel é obrigatório!",
+			});
 			return;
 		} else {
 			updatedData.available = available;
@@ -245,13 +255,17 @@ module.exports = class PetController {
 		const user = await getUserByToken(token);
 
 		if (pet.user._id.equals(user._id)) {
-			res.status(422).json({ message: "Usuário logado é o dono do pet!" });
+			res.status(422).json({
+				message: "Usuário logado é o dono do pet!",
+			});
 			return;
 		}
 
 		if (pet.adopter) {
 			if (pet.adopter._id.toString() === user._id.toString()) {
-				res.status(422).json({ message: "Você já agendou uma visita para este pet!" });
+				res.status(422).json({
+					message: "Você já agendou uma visita para este pet!",
+				});
 				return;
 			}
 		}
@@ -286,7 +300,9 @@ module.exports = class PetController {
 		const user = await getUserByToken(token);
 
 		if (pet.user._id.toString() !== user._id.toString()) {
-			res.status(422).json({ message: "Usuário logado não é o dono do pet!" });
+			res.status(422).json({
+				message: "Usuário logado não é o dono do pet!",
+			});
 			return;
 		}
 

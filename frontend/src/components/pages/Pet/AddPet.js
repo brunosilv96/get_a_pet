@@ -40,13 +40,7 @@ function AddPet() {
 				},
 			})
 			.then((response) => {
-				console.log(response.data);
 				return response.data;
-			})
-			.catch((err) => {
-				console.log(err);
-				msgType = "error";
-				return err.response.data;
 			});
 
 		setFlashMessage(data.message, msgType);

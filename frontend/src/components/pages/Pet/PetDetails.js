@@ -73,7 +73,7 @@ function PetDetails() {
 						<button onClick={schedule}>Solicitar uma visita</button>
 					) : (
 						<p>
-							Você precisa
+							Você precisa{" "}
 							<Link to="/register">criar uma conta</Link> para
 							solicitar a visita
 						</p>

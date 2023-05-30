@@ -74,7 +74,7 @@ module.exports = class PetController {
 	static async getAll(req, res) {
 		const pets = await Pet.find().sort("-createdAt");
 
-		res.status(200).json({ message: pets });
+		res.status(200).json({ pets: pets });
 	}
 
 	static async myPets(req, res) {
@@ -224,10 +224,7 @@ module.exports = class PetController {
 			updatedData.available = available;
 		}
 
-		if (images.length === 0) {
-			res.status(422).json({ message: "A imagem é obrigatória!" });
-			return;
-		} else {
+		if (images.length > 0) {
 			updatedData.images = [];
 			images.map((image) => {
 				updatedData.images.push(image.filename);

@@ -13,9 +13,10 @@ router.post(
 	imageUpload.array("images"),
 	PetController.create
 );
+router.get("/", PetController.getAll);
 router.get("/mypets", verifyToken, PetController.myPets);
 router.get("/myadoptions", verifyToken, PetController.myAdoptions);
-router.delete("/remove/:id", verifyToken, PetController.deletePetById);
+router.get("/:id", PetController.getPetById);
 router.patch(
 	"/edit/:id",
 	verifyToken,
@@ -24,9 +25,6 @@ router.patch(
 );
 router.patch("/schedule/:id", verifyToken, PetController.schedule);
 router.patch("/conclude/:id", verifyToken, PetController.concludeAdoption);
-
-// Public routes
-router.get("/", PetController.getAll);
-router.get("/:id", PetController.getPetById);
+router.delete("/remove/:id", verifyToken, PetController.deletePetById);
 
 module.exports = router;

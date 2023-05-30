@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-// import useFlashMessages from "../../../hooks/useFlashMessages";
+import useFlashMessages from "../../../hooks/useFlashMessages";
 import api from "../../../utils/api";
 
 import RoundedImage from "../../layout/RoundedImage";
@@ -11,7 +11,7 @@ import styles from "./Dashboard.module.css";
 function MyPets() {
 	const [pets, setPets] = useState([]);
 	const [token] = useState(localStorage.getItem("token") || "");
-	// const { setFlashMessage } = useFlashMessages();
+	const { setFlashMessage } = useFlashMessages();
 
 	useEffect(() => {
 		api.get("/pets/mypets", {
@@ -23,34 +23,62 @@ function MyPets() {
 		});
 	}, [token]);
 
-	pets.map((pet) => {
-		console.log(pet._id);
-	});
+	async function removePet(id) {
+		let msgType = "success";
+
+		const data = await api
+			.delete(`/pets/remove/${id}`, {
+				headers: {
+					Authorization: `Bearer ${JSON.parse(token)}`,
+				},
+			})
+			.then((response) => {
+				const updatedPets = pets.filter((pet) => pet._id !== id);
+				setPets(updatedPets);
+				return response.data;
+			})
+			.catch((err) => {
+				msgType = "error";
+				return err.response.data;
+			});
+
+		setFlashMessage(data.message, msgType);
+	}
 
 	return (
 		<section>
-			<div>
-				<h1>MyPets</h1>
+			<div className={styles.petslist_header}>
+				<h1>Meus Pets</h1>
 				<Link to="/pet/add">Cadastrar Pet</Link>
 			</div>
-			<div>
+			<div className={styles.petslist_container}>
 				{pets.length > 0 &&
 					pets.map((pet) => (
-						<div key={pet._id}>
+						<div key={pet._id} className={styles.petlist_row}>
 							<RoundedImage
 								src={`${process.env.REACT_APP_API}/images/pets/${pet.images[0]}`}
 								alt={pet.name}
-								width="75px"
+								width="px75"
 							/>
 							<span className="bold">{pet.name}</span>
-							<div className={styles.action}>
+							<div className={styles.actions}>
 								{pet.available ? (
 									<>
 										{pet.adopter && (
-											<button>Concluir Adoção</button>
+											<button
+												className={styles.conclude_btn}>
+												Concluir Adoção
+											</button>
 										)}
-										<Link to="/">Editar</Link>
-										<button>Excluir</button>
+										<Link to={`/pet/edit/${pet._id}`}>
+											Editar
+										</Link>
+										<button
+											onClick={() => {
+												removePet(pet._id);
+											}}>
+											Excluir
+										</button>
 									</>
 								) : (
 									<p>Pet já adotado</p>
